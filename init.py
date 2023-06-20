@@ -18,8 +18,9 @@ dfNTCO3 = pd.read_csv('ntco3.csv')
 dfPETR4 = pd.read_csv('petr4.csv')
 dfVALE3 = pd.read_csv('vale3.csv')
 
+selecionado = dfABEV3
 
-# encontrar menor data conjunta
+# encontrar menor data
 dfABEV3[['datetime']] = dfABEV3[['datetime']].apply(pd.to_datetime)
 
 menorData = dfABEV3["datetime"].iloc[0]
@@ -82,25 +83,55 @@ def mergeSort(arr):
 
 mergeSort(dataList)
 
-# print(dataList)
-# Criar figura e eixos
-fig, ax = plt.subplots()
+def gerarGrafico(selecionado):
 
-# Plotar os dados
-ax.plot(range(len(dataList)), dataList, label='VALE5')
-ax.plot(range(len(dataList)), dfBBAS3['close'].to_list(), label='VALE5')
+    print(selecionado.head())
+    dataList = selecionado['close'].to_list()
+    mergeSort(dataList)
+    # print(dataList)
+    # Criar figura e eixos
+    fig, ax = plt.subplots()
 
-
-# Mostrar os rótulos dos eixos e a legenda do gráfico
-ax.set_xlabel('Dia')
-ax.set_ylabel('Preço (R$)')
-ax.legend()
-
-# Exibir o gráfico pronto
-# plt.show()
+    # Plotar os dados
+    ax.plot(range(len(dataList)), dataList, label='Ótimo')
+    ax.plot(range(len(dataList)), selecionado['close'].to_list(), label=selecionado['ticker'].iloc[0])
 
 
-from flask import Flask, render_template, request
+    # Mostrar os rótulos dos eixos e a legenda do gráfico
+    ax.set_xlabel('Dia')
+    ax.set_ylabel('Preço (R$)')
+    ax.legend()
+
+    # Exibir o gráfico pronto
+    # plt.show()
+    plt.savefig('static/grafico.png')
+
+def Selct(select):
+
+    if select == '1':
+        return dfABEV3
+    elif select == '2':
+        return dfB3SA3
+    elif select == '3':
+        return dfBBAS3
+    elif select == '4':
+        return dfBBDC4
+    elif select == '5':
+        return dfITUB4
+    elif select == '6':
+        return dfIREN3
+    elif select == '7':
+        return dfMGLU3
+    elif select == '8':
+        return dfNTCO3
+    elif select == '9':
+        return dfPETR4
+    elif select == '10':
+        return dfVALE3
+    else:
+        return dfB3SA3
+    
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -118,9 +149,16 @@ def processar():
     
     opcao_selecionada = request.form['opcao']
     # Faça algo com a opção selecionada
+    print(opcao_selecionada)
+
+    gerarGrafico(Selct(opcao_selecionada))
+    
+    return redirect('/')
     return print(f"A opção selecionada foi: {opcao_selecionada}")
 
 
 if __name__ == '__main__':
     # gerar_grafico()  # Gerar o gráfico antes de iniciar o aplicativo
     app.run()
+
+

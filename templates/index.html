@@ -7,15 +7,40 @@
 
     <h1>Gráfico</h1>
 
-    <form method="POST" action="/">
+    <form method="POST" action="/selecionar">
         <select name="opcao">
-            <option value="opcao1">Opção 1</option>
-            <option value="opcao2">Opção 2</option>
-            <option value="opcao3">Opção 3</option>
+            <option value=1>ABEV3</option>
+            <option value=2>B3SA3</option>
+            <option value=3>BBAS3</option>
+            <option value=4>BBDC4</option>
+            <option value=5>ITUB4</option>
+            <option value=6>IREN3</option>
+            <option value=7>MGLU3</option>
+            <option value=8>NTCO3</option>
+            <option value=9>PETR4</option>
+            <option value=10>VALE3</option>
+
         </select>
         <button type="submit">Enviar</button>
     </form>
     
+    <br>
+    <hr>
+    <img src="{{ url_for('static', filename='grafico.png') }}" alt="Gráfico">
     
+    <br>
+    <br>
+    <h2>Menor data:</h2>
+    <input type="text" value="{{ texto }}">
+    <br>
+    <h2>Maior data:</h2>
+    <input type="text" value="{{ texto }}">
+    <br>
+    <h2>Menor preço:</h2>
+    <input type="text" value="{{ texto }}">
+    <br>
+    <h2>Maior preço:</h2>
+    <input type="text" value="{{ texto }}">
+    <br>
 </body>
 </html>
