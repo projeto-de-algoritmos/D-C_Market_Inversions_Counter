@@ -19,7 +19,7 @@ dfPETR4 = pd.read_csv('petr4.csv')
 dfVALE3 = pd.read_csv('vale3.csv')
 
 selecionado = dfABEV3
-
+nInversoes = 0
 # encontrar menor data
 dfABEV3[['datetime']] = dfABEV3[['datetime']].apply(pd.to_datetime)
 
@@ -81,19 +81,52 @@ def mergeSort(arr):
             k += 1
 
 
-mergeSort(dataList)
+# mergeSort(dataList)
+teste = 0
+def countAndSort(arr):
+    if len(arr) == 1:
+        return 0 , arr
+    else:
+        mid = len(arr) // 2
+        A = arr[:mid]
+        B = arr[mid:]
+
+        (Rl, A) = countAndSort(A)
+        (Rr, B) = countAndSort(B)
+        (Tot, R) = mergeAndCount(A, B)
+        Tot = Rr + Rl + Tot
+        return Tot, R
+
+def mergeAndCount(Rl, Rr):
+    i = j = k = 0
+    R = []
+    count = 0
+    while i < len(Rl) and j < len(Rr):
+        if Rl[i] <= Rr[j]:
+            R.append(Rl[i])
+            i += 1
+        else:
+            R.append(Rr[j])
+            j += 1
+            count += len(Rl) - i
+    R += Rl[i:]
+    R += Rr[j:]
+    return count, R
 
 def gerarGrafico(selecionado):
 
-    print(selecionado.head())
     dataList = selecionado['close'].to_list()
-    mergeSort(dataList)
+    # mergeSort(dataList)
+    (nInver, vet) = countAndSort(dataList)
+    nInversoes = nInver
+    teste = nInver
+    print(teste)
     # print(dataList)
     # Criar figura e eixos
     fig, ax = plt.subplots()
 
     # Plotar os dados
-    ax.plot(range(len(dataList)), dataList, label='Ótimo')
+    ax.plot(range(len(dataList)), vet, label='Ótimo')
     ax.plot(range(len(dataList)), selecionado['close'].to_list(), label=selecionado['ticker'].iloc[0])
 
 
@@ -105,6 +138,9 @@ def gerarGrafico(selecionado):
     # Exibir o gráfico pronto
     # plt.show()
     plt.savefig('static/grafico.png')
+    # print(f'--- {vet[0]} {vet[-1]}')
+    # print(selecionado['datetime'].iloc[0], selecionado['datetime'].iloc[-1])#, selecionado[selecionado['datetime']].count()
+    return nInver, vet[0], vet[-1], selecionado['datetime'].iloc[0], selecionado['datetime'].iloc[-1],len(selecionado)
 
 def Selct(select):
 
@@ -131,34 +167,28 @@ def Selct(select):
     else:
         return dfB3SA3
     
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET'])
 def index():
-    if request.method == 'POST':
-        opcao_selecionada = request.form['opcao']
-        # Faça algo com a opção selecionada
-        return print({'mensagem': f"A opção selecionada foi: {opcao_selecionada}"})
-    return render_template('index.html')
+    
+    inversoes = request.args.get('nInversoes')
 
-@app.route('/selecionar', methods=['POST'])
+    return render_template('index.html', nInversoes=teste)
+
+@app.route('/processar', methods=['POST'])
 def processar():
     
     opcao_selecionada = request.form['opcao']
-    # Faça algo com a opção selecionada
-    print(opcao_selecionada)
-
-    gerarGrafico(Selct(opcao_selecionada))
+    (nInversoes, menorPreco, maiorPreco, menorData, maiorData, nRegistros) = gerarGrafico(Selct(opcao_selecionada))
     
-    return redirect('/')
-    return print(f"A opção selecionada foi: {opcao_selecionada}")
+    return render_template('index.html', nInversoes=nInversoes, menorPreco=menorPreco, maiorPreco=maiorPreco, menorData=menorData, maiorData=maiorData, nRegistros=nRegistros )
 
 
 if __name__ == '__main__':
-    # gerar_grafico()  # Gerar o gráfico antes de iniciar o aplicativo
-    app.run()
+    app.run(port=5001)
 
 

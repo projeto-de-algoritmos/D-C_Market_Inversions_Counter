@@ -7,7 +7,7 @@
 
     <h1>Gráfico</h1>
 
-    <form method="POST" action="/selecionar">
+    <form method="POST" action="/processar">
         <select name="opcao">
             <option value=1>ABEV3</option>
             <option value=2>B3SA3</option>
@@ -26,21 +26,21 @@
     
     <br>
     <hr>
+
     <img src="{{ url_for('static', filename='grafico.png') }}" alt="Gráfico">
     
     <br>
-    <br>
-    <h2>Menor data:</h2>
-    <input type="text" value="{{ texto }}">
-    <br>
-    <h2>Maior data:</h2>
-    <input type="text" value="{{ texto }}">
-    <br>
-    <h2>Menor preço:</h2>
-    <input type="text" value="{{ texto }}">
-    <br>
-    <h2>Maior preço:</h2>
-    <input type="text" value="{{ texto }}">
-    <br>
+
+    <h2>Numero de registros: {{nRegistros}}</h2>
+    <div>
+        <h2>Menor preço: {{menorPreco}}</h2>
+        <h2>Maior preço: {{maiorPreco}}</h2>
+    </div>
+    <div>
+        <h2>Menor data: {{menorData}}</h2>
+        <h2>Maior data: {{maiorData}}</h2>
+    </div>
+    <h2>Numero de Inversões: {{nInversoes}}</h2>
+
 </body>
 </html>
