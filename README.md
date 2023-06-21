@@ -1,7 +1,6 @@
 # D-C_Market_Inversions_Counter
 
 
-**Número da Lista**: 22<br>
 **Conteúdo da Disciplina**: Dividir e Conquistar - D&C<br>
 
 ## Alunos
@@ -11,21 +10,23 @@
 | 20/0069322 | Samuel Alves Sato |
 
 ## Sobre 
-Descreva os objetivos do seu projeto e como ele funciona. 
+O projeto utiliza o algoritmo de contagem de inversões em dados da bolsa de valores para comparar a flutuação real do mercado com uma projeção de como seria se a ação tivesse apenas subido.
 
 ## Screenshots
 Adicione 3 ou mais screenshots do projeto em funcionamento.
 
 ## Instalação 
-**Linguagem**: xxxxxx<br>
-**Framework**: (caso exista)<br>
-Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
+**Linguagem**: python<br>
+**Framework**: Flask<br>
+
+baixar e instalar python e pip.<br>
+
+pip install pandas <br>
+pip install matplotlib <br>
+pip install flask <br>
 
 ## Uso 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
-
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+em um terminal digite python init.py
 
 
 
